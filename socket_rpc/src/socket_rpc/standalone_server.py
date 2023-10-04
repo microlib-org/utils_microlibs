@@ -1,5 +1,6 @@
 import pickle
 import logging
+import traceback
 import socket
 from functools import wraps
 from typing import Callable
@@ -15,12 +16,15 @@ def _collect_all_bytes(buffer_size, connection):
 
 
 def _handle_connection(connection, callback, client_address, buffer_size):
-    logging.info(f'Connected by {client_address}')
-    data = _collect_all_bytes(buffer_size, connection)
-    obj = pickle.loads(data)
-    callback_args = obj['args']
-    callback_kwargs = obj['kwargs']
-    callback(*callback_args, **callback_kwargs)
+    try:
+        logging.info(f'Connected by {client_address}')
+        data = _collect_all_bytes(buffer_size, connection)
+        obj = pickle.loads(data)
+        callback_args = obj['args']
+        callback_kwargs = obj['kwargs']
+        callback(*callback_args, **callback_kwargs)
+    except Exception as e:
+        logging.error(f"Exception happened while processing connection", e)
 
 
 def listener(callback, host, port, buffer_size):
