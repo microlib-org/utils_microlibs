@@ -1,6 +1,5 @@
-import pickle
 import logging
-import traceback
+import pickle
 import socket
 from functools import wraps
 from typing import Callable
