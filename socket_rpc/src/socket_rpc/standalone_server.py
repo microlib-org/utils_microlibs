@@ -4,7 +4,7 @@ import socket
 from typing import Callable
 
 
-def main(
+def listen_callback(
         callback: Callable,
         host: str,
         port: int,
@@ -43,3 +43,10 @@ def main(
         except KeyboardInterrupt:
             logging.info("Server is shutting down.")
 
+
+def rpc(host: str, port: int, buffer_size: int):
+    def decorator(callback: Callable):
+        def wrapper():
+            listen_callback(callback, host, port, buffer_size)
+        return wrapper
+    return decorator
