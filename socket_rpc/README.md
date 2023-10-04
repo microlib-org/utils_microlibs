@@ -12,6 +12,8 @@ Install with:
 pip install socket_rpc
 ```
 
+It has no external dependencies and is less than 100 lines of code.
+
 ## Quick server example
 
 To expose a function over TCP, just decorate it with the `rpc` decorator:
