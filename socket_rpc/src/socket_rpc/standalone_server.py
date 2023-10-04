@@ -26,7 +26,7 @@ def main(
                 # Wait for a connection
                 connection, client_address = server_socket.accept()
                 with connection:
-                    logging.info('Connected by', client_address)
+                    logging.info(f'Connected by {client_address}')
                     # Receive the data
                     data = b''
                     while True:
