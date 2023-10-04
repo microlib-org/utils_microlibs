@@ -28,7 +28,7 @@ from socket_rpc import rpc
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
-@rpc(host='localhost', port=61000, buffer_size=10 * 1024 * 1024)
+@rpc(host='localhost', port=61000, buffer_size=1 * 1024 * 1024)
 def callback(np_arr: np.ndarray):
     print(np_arr.shape)
 
