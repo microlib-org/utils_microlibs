@@ -24,15 +24,22 @@ import sys
 
 import numpy as np
 
-from socket_rpc import rpc
+from socket_rpc import RPCServer
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
+def callback0(np_arr: np.ndarray):
+    print('0', np_arr.shape)
+    
 
-@rpc(host='localhost', port=61000, buffer_size=1 * 1024 * 1024)
-def callback(np_arr: np.ndarray):
-    print(np_arr.shape)
+def callback1(np_arr: np.ndarray):
+    print('1', np_arr.shape)
+
+server = RPCServer(host='localhost', port=61000, buffer_size=1 * 1024 * 1024)
+server.add_fn(callback0)
+server.add_fn(callback1)
+server.serve()
 
 ```
 
@@ -42,9 +49,9 @@ To call a function already exposed with the `rpc` decorator, just use the `rpc_c
 
 ```python
 import numpy as np
-from socket_rpc import rpc_call
+from socket_rpc import RPCClient
 
-send_np_arr = rpc_call(host='localhost', port=61000)
-
-send_np_arr(np.arange(1111))
+client = RPCClient('127.0.0.1', 5555)
+client.callback0(np.arange(100))
+client.callback1(np.arange(10))
 ```
