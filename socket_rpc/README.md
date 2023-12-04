@@ -2,9 +2,9 @@
 
 `socket_rpc` is a very simple microlib for remote procedure calls (RPC) over sockets in Python. 
 
-It exposes two functions: 
-- `rpc` - acts as a server for a Python RPC
-- `rpc_call` - allows you to call a function, registered on another host with the `rpc` decorator.
+It exposes two class: 
+- `RPCServer` - acts as a server for a Python RPC
+- `RPCClient` - allows you to call a function, registered on another host with the `rpc` decorator.
 
 Install with:
 
@@ -13,6 +13,9 @@ pip install socket_rpc
 ```
 
 It has no external dependencies and is less than 100 lines of code.
+
+It doesn't fork the process and guarantees you that the calls to a server will be processed in the 
+same order in which they were done.
 
 ## Quick server example
 
