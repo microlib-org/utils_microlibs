@@ -34,7 +34,7 @@ class RPCServer:
             callback_kwargs = obj['kwargs']
 
             if callback_name in self.functions:
-                self.functions[callback_name](*callback_args, **callback_kwargs)
+                return self.functions[callback_name](*callback_args, **callback_kwargs)
             else:
                 logging.error(f"No such function: {callback_name}")
 
@@ -58,3 +58,16 @@ class RPCServer:
 
             except KeyboardInterrupt:
                 logging.info("Server is shutting down.")
+
+    def serve_once(self):
+        server_address = (self.host, self.port)
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+            server_socket.bind(server_address)
+            server_socket.listen()
+            logging.info(f"Server listening on {server_address}")
+
+            logging.info("Waiting for a connection...")
+            connection, client_address = server_socket.accept()
+            with connection:
+                output = self._handle_connection(connection, client_address)
+        return output
