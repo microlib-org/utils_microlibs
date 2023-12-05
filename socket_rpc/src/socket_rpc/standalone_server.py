@@ -6,7 +6,7 @@ from typing import Callable
 
 
 class RPCServer:
-    def __init__(self, host: str, port: int, buffer_size: int):
+    def __init__(self, host: str, port: int, buffer_size: int = 10 * 1024 * 1024):
         self.host = host
         self.port = port
         self.buffer_size = buffer_size
@@ -59,9 +59,10 @@ class RPCServer:
             except KeyboardInterrupt:
                 logging.info("Server is shutting down.")
 
-    def serve_once(self):
+    def serve_once(self, timeout: float):
         server_address = (self.host, self.port)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+            server_socket.settimeout(timeout)
             server_socket.bind(server_address)
             server_socket.listen()
             logging.info(f"Server listening on {server_address}")
