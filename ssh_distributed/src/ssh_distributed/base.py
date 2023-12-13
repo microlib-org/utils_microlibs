@@ -87,18 +87,25 @@ def kill_tmux_session_on_host(
     subprocess.run(args)
 
 
-def run_on_host(host, command):
+def run_on_host(
+        host: str,
+        command: str,
+        name: str
+):
     """
     Execute a command on a remote host using SSH.
 
     :param host: The hostname or IP address of the remote host.
     :param command: The command to be executed on the remote host.
     """
-    ssh_command = ["ssh", host, command]
-    try:
-        subprocess.run(ssh_command)
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Error occurred: {e.stderr}")
+    logging.info("run_on_host.sh")
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(base_dir, 'run_on_host.sh')
+
+    args = [
+        script_path, host, command, name
+    ]
+    subprocess.run(args)
 
 
 def upload_to_hosts(
