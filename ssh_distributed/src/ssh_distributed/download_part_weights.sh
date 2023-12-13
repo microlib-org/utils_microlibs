@@ -1,25 +1,25 @@
 #!/bin/bash
 
-# Check if three arguments are provided
-if [ $# -ne 3 ]; then
-    echo "Error: Usage: $0 <source_directory> <destination_directory> <spec>"
+# Check if five arguments are provided
+if [ $# -ne 5 ]; then
+    echo "Error: Usage: $0 <source_host> <source_directory> <destination_host> <destination_directory> <spec>"
     exit 1
 fi
 
 # Assign arguments to variables
-SOURCE_DIR="$1"
-DEST_DIR="$2"
-SPEC="$3"
-
-mkdir -p "$DEST_DIR"
+SOURCE_HOST="$1"
+SOURCE_DIR="$2"
+DEST_HOST="$3"
+DEST_DIR="$4"
+SPEC="$5"
 
 # Define the Python module
 PYTHON_MODULE="llm_sepweight.filenames"
 
 # Execute the Python command and loop over its output
 for i in $(python -m $PYTHON_MODULE "$SPEC"); do
-    # Perform the rsync operation
-    rsync -avz --progress "$SOURCE_DIR/$i" "$DEST_DIR/$i"
+    # Perform the rsync operation via SSH
+    ssh -A "$SOURCE_HOST" "rsync -avz --progress '$SOURCE_DIR/$i' '$DEST_HOST:$DEST_DIR/$i'"
 
     # Optional: Check if rsync was successful
     if [ $? -ne 0 ]; then
@@ -28,4 +28,4 @@ for i in $(python -m $PYTHON_MODULE "$SPEC"); do
     fi
 done
 
-echo "All rsync operations completed."
+echo "All rsync operations completed"
