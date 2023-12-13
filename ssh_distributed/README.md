@@ -2,7 +2,7 @@
 
 `ssh_distributed` is a very simple microlib for managing distributed computations using `ssh`.
 
-Currently it only works on Linux-based machines.
+Note: only works on Linux-based machines.
 
 Install with:
 
@@ -10,13 +10,12 @@ Install with:
 pip install ssh_distributed
 ```
 
-
 ## Create autossh tunnel with port remapping
 
 ```python
 import ssh_distributed
 
-ssh_distributed.connect_tunnel(
+ssh_distributed.create_tunnel(
     from_host="home00.local",
     to_host="home01.local",
     from_port=61001,

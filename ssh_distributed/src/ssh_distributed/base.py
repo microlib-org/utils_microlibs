@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Union, List
 
 
-def connect_tunnel(
+def create_tunnel(
         from_host: str,
         to_host: str,
         from_port: int,
@@ -14,7 +14,7 @@ def connect_tunnel(
 ):
     logging.info("Connect tunnel called. Make sure 'tmux' and 'autossh' are installed on all hosts.")
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(base_dir, 'connect_tunnel.sh')
+    script_path = os.path.join(base_dir, 'create_tunnel.sh')
 
     args = [
         script_path, from_host, to_host, str(from_port), str(to_port), tmux_session_name
@@ -115,12 +115,3 @@ def upload_to_hosts(
     ]
     subprocess.run(args)
 
-
-if __name__ == "__main__":
-    connect_tunnel(
-        from_host="homebastion.local",
-        to_host="home02.local",
-        from_port=61002,
-        to_port=61000,
-        tmux_session_name="autossh_next"
-    )
