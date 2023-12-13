@@ -22,6 +22,38 @@ def connect_tunnel(
     subprocess.run(args)
 
 
+def delete_directory_from_hosts(
+        path: Union[str, Path],
+        hosts: List[str]
+):
+    logging.info("delete_directory_from_hosts.sh")
+    path = Path(path)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(base_dir, 'delete_directory_from_hosts.sh')
+
+    args = [
+        script_path, path, *hosts
+    ]
+    subprocess.run(args)
+
+
+def download_from_hosts(
+        source_path: Union[str, Path],
+        out_path: Union[str, Path],
+        hosts: List[str]
+):
+    logging.info("download_from_hosts.sh")
+    source_path = Path(source_path)
+    out_path = Path(out_path)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(base_dir, 'download_from_hosts.sh')
+
+    args = [
+        script_path, source_path, out_path, *hosts
+    ]
+    subprocess.run(args)
+
+
 def upload_to_hosts(
         path: Union[str, Path],
         hosts: List[str]
@@ -49,38 +81,6 @@ def run_on_host(host, command):
         subprocess.run(ssh_command)
     except subprocess.CalledProcessError as e:
         logging.error(f"Error occurred: {e.stderr}")
-
-
-def download_from_hosts(
-        source_path: Union[str, Path],
-        out_path: Union[str, Path],
-        hosts: List[str]
-):
-    logging.info("download_from_hosts.sh")
-    source_path = Path(source_path)
-    out_path = Path(out_path)
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(base_dir, 'download_from_hosts.sh')
-
-    args = [
-        script_path, source_path, out_path, *hosts
-    ]
-    subprocess.run(args)
-
-
-def delete_directory_from_hosts(
-        path: Union[str, Path],
-        hosts: List[str]
-):
-    logging.info("delete_directory_from_hosts.sh")
-    path = Path(path)
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(base_dir, 'delete_directory_from_hosts.sh')
-
-    args = [
-        script_path, path, *hosts
-    ]
-    subprocess.run(args)
 
 
 if __name__ == "__main__":
