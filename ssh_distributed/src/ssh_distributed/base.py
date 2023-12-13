@@ -38,33 +38,37 @@ def delete_directory_from_hosts(
 
 
 def download_from_hosts(
-        source_path: Union[str, Path],
-        out_path: Union[str, Path],
+        from_path: Union[str, Path],
+        to_path: Union[str, Path],
         hosts: List[str]
 ):
     logging.info("download_from_hosts.sh")
-    source_path = Path(source_path)
-    out_path = Path(out_path)
+    from_path = Path(from_path)
+    to_path = Path(to_path)
     base_dir = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(base_dir, 'download_from_hosts.sh')
 
     args = [
-        script_path, source_path, out_path, *hosts
+        script_path, from_path, to_path, *hosts
     ]
     subprocess.run(args)
 
 
-def upload_to_hosts(
-        path: Union[str, Path],
-        hosts: List[str]
+def download_part_weights(
+        from_host: str,
+        to_host: str,
+        from_path: Union[str, Path],
+        to_path: Union[str, Path],
+        spec: str
 ):
-    logging.info("upload_to_hosts.sh")
-    path = Path(path)
+    logging.info("download_part_weights.sh")
+    from_path = Path(from_path)
+    to_path = Path(to_path)
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(base_dir, 'upload_to_hosts.sh')
+    script_path = os.path.join(base_dir, 'download_part_weights.sh')
 
     args = [
-        script_path, str(path.absolute().resolve()), *hosts
+        script_path, from_host, to_host, from_path, to_path, spec
     ]
     subprocess.run(args)
 
@@ -81,6 +85,21 @@ def run_on_host(host, command):
         subprocess.run(ssh_command)
     except subprocess.CalledProcessError as e:
         logging.error(f"Error occurred: {e.stderr}")
+
+
+def upload_to_hosts(
+        path: Union[str, Path],
+        hosts: List[str]
+):
+    logging.info("upload_to_hosts.sh")
+    path = Path(path)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(base_dir, 'upload_to_hosts.sh')
+
+    args = [
+        script_path, str(path.absolute().resolve()), *hosts
+    ]
+    subprocess.run(args)
 
 
 if __name__ == "__main__":
