@@ -73,6 +73,20 @@ def download_part_weights(
     subprocess.run(args)
 
 
+def kill_tmux_session_on_host(
+        host: str,
+        name: str
+):
+    logging.info("kill_tmux_session_on_host.sh")
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(base_dir, 'kill_tmux_session_on_host.sh')
+
+    args = [
+        script_path, host, name
+    ]
+    subprocess.run(args)
+
+
 def run_on_host(host, command):
     """
     Execute a command on a remote host using SSH.
