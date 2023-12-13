@@ -2,14 +2,14 @@
 
 # Check if five arguments are provided
 if [ $# -ne 5 ]; then
-    echo "Error: Usage: $0 <source_host> <source_directory> <destination_host> <destination_directory> <spec>"
+    echo "Error: Usage: $0 <source_host> <destination_host> <source_directory> <destination_directory> <spec>"
     exit 1
 fi
 
 # Assign arguments to variables
 SOURCE_HOST="$1"
-SOURCE_DIR="$2"
-DEST_HOST="$3"
+DEST_HOST="$2"
+SOURCE_DIR="$3"
 DEST_DIR="$4"
 SPEC="$5"
 
