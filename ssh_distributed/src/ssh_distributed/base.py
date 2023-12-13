@@ -68,6 +68,21 @@ def download_from_hosts(
     subprocess.run(args)
 
 
+def delete_directory_from_hosts(
+        path: Union[str, Path],
+        hosts: List[str]
+):
+    logging.info("delete_directory_from_hosts.sh")
+    path = Path(path)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(base_dir, 'delete_directory_from_hosts.sh')
+
+    args = [
+        script_path, path, *hosts
+    ]
+    subprocess.run(args)
+
+
 if __name__ == "__main__":
     connect_tunnel(
         from_host="homebastion.local",
