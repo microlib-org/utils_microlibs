@@ -13,10 +13,7 @@ def connect_tunnel(
         tmux_session_name: str
 ):
     logging.info("Connect tunnel called. Make sure 'tmux' and 'autossh' are installed on all hosts.")
-    # Determine the directory of base.py
     base_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Construct the path to the connect_tunnel.sh script
     script_path = os.path.join(base_dir, 'connect_tunnel.sh')
 
     args = [
@@ -31,10 +28,7 @@ def upload_to_hosts(
 ):
     logging.info("upload_to_hosts.sh")
     path = Path(path)
-    # Determine the directory of base.py
     base_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Construct the path to the connect_tunnel.sh script
     script_path = os.path.join(base_dir, 'upload_to_hosts.sh')
 
     args = [
@@ -43,7 +37,37 @@ def upload_to_hosts(
     subprocess.run(args)
 
 
-# Call the function
+def run_on_host(host, command):
+    """
+    Execute a command on a remote host using SSH.
+
+    :param host: The hostname or IP address of the remote host.
+    :param command: The command to be executed on the remote host.
+    """
+    ssh_command = ["ssh", host, command]
+    try:
+        subprocess.run(ssh_command)
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Error occurred: {e.stderr}")
+
+
+def download_from_hosts(
+        source_path: Union[str, Path],
+        out_path: Union[str, Path],
+        hosts: List[str]
+):
+    logging.info("upload_to_hosts.sh")
+    source_path = Path(source_path)
+    out_path = Path(out_path)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(base_dir, 'download_from_hosts.sh')
+
+    args = [
+        script_path, source_path, out_path, *hosts
+    ]
+    subprocess.run(args)
+
+
 if __name__ == "__main__":
     connect_tunnel(
         from_host="homebastion.local",
