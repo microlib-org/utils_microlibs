@@ -56,7 +56,7 @@ def download_from_hosts(
         out_path: Union[str, Path],
         hosts: List[str]
 ):
-    logging.info("upload_to_hosts.sh")
+    logging.info("download_from_hosts.sh")
     source_path = Path(source_path)
     out_path = Path(out_path)
     base_dir = os.path.dirname(os.path.abspath(__file__))
