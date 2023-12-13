@@ -5,6 +5,7 @@ from .base import (
     delete_directory_from_hosts,
     download_from_hosts,
     download_part_weights,
+    kill_tmux_session_on_host,
     run_on_host,
     upload_to_hosts
 )
