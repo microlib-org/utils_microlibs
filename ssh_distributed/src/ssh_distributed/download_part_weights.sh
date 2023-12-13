@@ -19,7 +19,7 @@ PYTHON_MODULE="llm_sepweight.filenames"
 # Execute the Python command and loop over its output
 for i in $(python -m $PYTHON_MODULE "$SPEC"); do
     # Perform the rsync operation via SSH
-    ssh -A "$SOURCE_HOST" "rsync -avz --progress '$SOURCE_DIR/$i' '$DEST_HOST:$DEST_DIR/$i'"
+    ssh "$SOURCE_HOST" "rsync -avz --progress '$SOURCE_DIR/$i' '$DEST_HOST:$DEST_DIR/$i'"
 
     # Optional: Check if rsync was successful
     if [ $? -ne 0 ]; then
