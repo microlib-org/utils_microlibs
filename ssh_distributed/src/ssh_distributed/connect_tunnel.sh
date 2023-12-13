@@ -42,4 +42,4 @@ fi
 
 # Connect to Host A and from there, use autossh to set up the tunnel from Host A to Host B
 #ssh -t "$USER_A@$HOST_A" "autossh -M 0 -f -N -L $PORT_A:localhost:$PORT_B $USER_B@$HOST_B"
-ssh -t "$USER_A@$HOST_A" "tmux new-session -d -s $TMUX_SESSION  \"autossh -M 0 -N -L $PORT_A:localhost:$PORT_B $USER_B@$HOST_B\""
+ssh -tt "$USER_A@$HOST_A" "tmux new-session -d -s $TMUX_SESSION  \"autossh -M 0 -N -L $PORT_A:localhost:$PORT_B $USER_B@$HOST_B\""
