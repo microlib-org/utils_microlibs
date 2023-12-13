@@ -97,6 +97,7 @@ def run_on_host(
 
     :param host: The hostname or IP address of the remote host.
     :param command: The command to be executed on the remote host.
+    :param name: The name of the tmux session
     """
     logging.info("run_on_host.sh")
     base_dir = os.path.dirname(os.path.abspath(__file__))
