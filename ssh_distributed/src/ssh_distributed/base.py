@@ -1,6 +1,8 @@
 import logging
 import subprocess
 import os
+from pathlib import Path
+from typing import Union, List
 
 
 def connect_tunnel(
@@ -19,6 +21,24 @@ def connect_tunnel(
 
     args = [
         script_path, from_host, to_host, str(from_port), str(to_port), tmux_session_name
+    ]
+    subprocess.run(args)
+
+
+def upload_to_hosts(
+        path: Union[str, Path],
+        hosts: List[str]
+):
+    logging.info("upload_to_hosts.sh")
+    path = Path(path)
+    # Determine the directory of base.py
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Construct the path to the connect_tunnel.sh script
+    script_path = os.path.join(base_dir, 'upload_to_hosts.sh')
+
+    args = [
+        script_path, str(path.absolute().resolve()), *hosts
     ]
     subprocess.run(args)
 
