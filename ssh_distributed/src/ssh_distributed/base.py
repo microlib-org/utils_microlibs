@@ -54,25 +54,6 @@ def download_from_hosts(
     subprocess.run(args)
 
 
-def download_part_weights(
-        from_host: str,
-        to_host: str,
-        from_path: Union[str, Path],
-        to_path: Union[str, Path],
-        spec: str
-):
-    logging.info("rsync_file.sh")
-    from_path = Path(from_path)
-    to_path = Path(to_path)
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(base_dir, 'rsync_file.sh')
-
-    args = [
-        script_path, from_host, to_host, from_path, to_path, spec
-    ]
-    subprocess.run(args)
-
-
 def rsync_file(
         from_host: str,
         to_host: str,
