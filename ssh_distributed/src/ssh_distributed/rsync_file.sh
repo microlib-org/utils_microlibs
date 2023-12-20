@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if five arguments are provided
-if [ $# -ne 5 ]; then
+if [ $# -ne 4 ]; then
     echo "Error: Usage: $0 <source_host> <destination_host> <source_filename> <dest_filename>"
     exit 1
 fi
