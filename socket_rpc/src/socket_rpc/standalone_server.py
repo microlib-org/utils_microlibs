@@ -6,11 +6,12 @@ from typing import Callable
 
 
 class RPCServer:
-    def __init__(self, host: str, port: int, buffer_size: int = 10 * 1024 * 1024):
+    def __init__(self, host: str, port: int, buffer_size: int = 10 * 1024 * 1024, client=None):
         self.host = host
         self.port = port
         self.buffer_size = buffer_size
         self.functions = {}  # dictionary to store function references
+        self.client = client
 
     def add_fn(self, callback: Callable):
         name = callback.__name__
@@ -54,7 +55,10 @@ class RPCServer:
                     logging.info("Waiting for a connection...")
                     connection, client_address = server_socket.accept()
                     with connection:
-                        self._handle_connection(connection, client_address)
+                        output = self._handle_connection(connection, client_address)
+                        if self.client is not None:
+                            logging.info("Sending output to client")
+                            self.client.receive(output)
 
             except KeyboardInterrupt:
                 logging.info("Server is shutting down.")
