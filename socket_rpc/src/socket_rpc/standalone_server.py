@@ -6,12 +6,18 @@ from typing import Callable
 
 
 class RPCServer:
-    def __init__(self, host: str, port: int, buffer_size: int = 10 * 1024 * 1024, client=None):
+    def __init__(
+            self,
+            host: str,
+            port: int,
+            buffer_size: int = 10 * 1024 * 1024,
+            response_client=None
+    ):
         self.host = host
         self.port = port
         self.buffer_size = buffer_size
         self.functions = {}  # dictionary to store function references
-        self.client = client
+        self.client = response_client
 
     def add_fn(self, callback: Callable):
         name = callback.__name__
