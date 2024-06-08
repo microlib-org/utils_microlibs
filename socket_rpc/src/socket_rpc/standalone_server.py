@@ -80,7 +80,8 @@ class RPCServer:
         for i in range(self.max_retries):
             try:
                 self.client.receive(output)
-                self.response_callback()
+                if self.response_callback is not None:
+                    self.response_callback()
                 return
             except ConnectionRefusedError:
                 logging.warning("Connection refused")
