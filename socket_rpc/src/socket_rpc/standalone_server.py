@@ -2,6 +2,7 @@ import logging
 import pickle
 import socket
 import traceback
+from time import sleep
 from typing import Callable
 
 
@@ -11,13 +12,19 @@ class RPCServer:
             host: str,
             port: int,
             buffer_size: int = 10 * 1024 * 1024,
-            response_client=None
+            response_client=None,
+            max_retries: int = 100,
+            interval: float = 0.1,
+            response_callback: Callable = None,
     ):
         self.host = host
         self.port = port
         self.buffer_size = buffer_size
         self.functions = {}  # dictionary to store function references
         self.client = response_client
+        self.max_retries = max_retries
+        self.interval = interval
+        self.response_callback = response_callback
 
     def add_fn(self, callback: Callable):
         name = callback.__name__
@@ -63,11 +70,21 @@ class RPCServer:
                     with connection:
                         output = self._handle_connection(connection, client_address)
                         if self.client is not None:
-                            logging.info("Sending output to client")
-                            self.client.receive(output)
+                            self._send_output_to_client(output)
 
             except KeyboardInterrupt:
                 logging.info("Server is shutting down.")
+
+    def _send_output_to_client(self, output):
+        logging.info("Sending output to client")
+        for i in range(self.max_retries):
+            try:
+                self.client.receive(output)
+                self.response_callback()
+                return
+            except ConnectionRefusedError:
+                logging.warning("Connection refused")
+                sleep(self.interval)
 
     def serve_once(self, timeout: float):
         server_address = (self.host, self.port)
