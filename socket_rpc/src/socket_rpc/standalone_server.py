@@ -16,6 +16,7 @@ class RPCServer:
             max_retries: int = 100,
             interval: float = 0.1,
             response_callback: Callable = None,
+            max_pending_queries: int = 10,
     ):
         self.host = host
         self.port = port
@@ -25,6 +26,7 @@ class RPCServer:
         self.max_retries = max_retries
         self.interval = interval
         self.response_callback = response_callback
+        self.max_pending_queries = max_pending_queries
 
     def add_fn(self, callback: Callable):
         name = callback.__name__
@@ -92,7 +94,7 @@ class RPCServer:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
             server_socket.settimeout(timeout)
             server_socket.bind(server_address)
-            server_socket.listen()
+            server_socket.listen(self.max_pending_queries)
             logging.info(f"Server listening on {server_address}")
 
             logging.info("Waiting for a connection...")
