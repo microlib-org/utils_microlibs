@@ -44,7 +44,7 @@ class RPCClient:
             except ConnectionRefusedError:
                 # The .local domain changed ip
                 self._client_ip = socket.gethostbyname(self.host)
-                self._invoke_host(self._client_ip, pickled_data)
+                self._invoke_host(self.host, pickled_data)
         else:
             self._invoke_host(self.host, pickled_data)
 
