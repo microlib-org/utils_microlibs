@@ -84,7 +84,7 @@ class RPCServer:
                     self.response_callback()
                 return
             except ConnectionRefusedError:
-                logging.warning("Connection refused")
+                logging.warning(f"Connection refused for {self.client.server_address}")
                 sleep(self.interval)
 
     def serve_once(self, timeout: float):
