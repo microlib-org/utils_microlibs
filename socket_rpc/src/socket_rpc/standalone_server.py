@@ -81,7 +81,7 @@ class RPCServer:
             try:
                 self.client.receive(output)
                 if self.response_callback is not None:
-                    self.response_callback()
+                    self.response_callback(output)
                 return
             except ConnectionRefusedError:
                 logging.warning(f"Connection refused for {self.client.host}:{self.client.port}")
